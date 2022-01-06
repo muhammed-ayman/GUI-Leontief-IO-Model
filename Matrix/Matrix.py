@@ -40,6 +40,27 @@ class Matrix:
     
     def get_columns_dimension(self):
         return len(self.matrix[0])
+    
+    # Overloading the + operator to work for matrices
+    def __add__(self, SecondMatrix):
+        if not (self.get_rows_dimension() == SecondMatrix.get_rows_dimension() and self.get_columns_dimension() == SecondMatrix.get_columns_dimension()):
+            print("Invalid Matrices Dimensions")
+            return
+        resultList = []
+        for row in range(self.get_rows_dimension()):
+            rowList = []
+            for column in range(self.get_columns_dimension()):
+                rowList.append(self.matrix[row][column] + SecondMatrix[row][column])
+            resultList.append(rowList)
+        resultMatrix = Matrix(resultList, len(resultList), len(resultList[0]))
+        
+        return resultMatrix
+
+    def __getitem__(self, index):
+        try:
+            return self.matrix[index]
+        except:
+            print("Invalid Element Position!")
 
     def __del__(self):
         print("The Matrix Has Been Deleted!")
