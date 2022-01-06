@@ -41,36 +41,6 @@ class Matrix:
     def get_columns_dimension(self):
         return len(self.matrix[0])
     
-    # Overloading the + operator to work for matrices
-    def __add__(self, SecondMatrix):
-        if not (self.get_rows_dimension() == SecondMatrix.get_rows_dimension() and self.get_columns_dimension() == SecondMatrix.get_columns_dimension()):
-            print("Invalid Matrices Dimensions")
-            return
-        resultList = []
-        for row in range(self.get_rows_dimension()):
-            rowList = []
-            for column in range(self.get_columns_dimension()):
-                rowList.append(self.matrix[row][column] + SecondMatrix[row][column])
-            resultList.append(rowList)
-        resultMatrix = Matrix(resultList, len(resultList), len(resultList[0]))
-        
-        return resultMatrix
-    
-    # Overloading the - operator to work for matrices
-    def __sub__(self, SecondMatrix):  
-        if not (self.get_rows_dimension() == SecondMatrix.get_rows_dimension() and self.get_columns_dimension() == SecondMatrix.get_columns_dimension()):
-            print("Invalid Matrices Dimensions")
-            return
-        resultList = []
-        for row in range(self.get_rows_dimension()):
-            rowList = []
-            for column in range(self.get_columns_dimension()):
-                rowList.append(self.matrix[row][column] - SecondMatrix[row][column])
-            resultList.append(rowList)
-        resultMatrix = Matrix(resultList, len(resultList), len(resultList[0]))
-        
-        return resultMatrix
-    
     def multiplyScalar(self, scalar):
         try:
             for row in range(self.get_rows_dimension()):
@@ -78,6 +48,64 @@ class Matrix:
                     self.matrix[row][column] *= scalar
         except:
             print("Invalid Scalar!")
+    
+    # Overloading the + operator to work for matrices
+    def __add__(self, SecondMatrix):
+        try:  
+            if not (self.get_rows_dimension() == SecondMatrix.get_rows_dimension() and self.get_columns_dimension() == SecondMatrix.get_columns_dimension()):
+                print("Invalid Matrices Dimensions")
+                return
+            resultList = []
+            for row in range(self.get_rows_dimension()):
+                rowList = []
+                for column in range(self.get_columns_dimension()):
+                    rowList.append(self.matrix[row][column] + SecondMatrix[row][column])
+                resultList.append(rowList)
+            resultMatrix = Matrix(resultList, len(resultList), len(resultList[0]))
+            
+            return resultMatrix
+
+        except:
+            print("Undefined Addition")
+    
+    # Overloading the - operator to work for matrices
+    def __sub__(self, SecondMatrix):
+        try:  
+            if not (self.get_rows_dimension() == SecondMatrix.get_rows_dimension() and self.get_columns_dimension() == SecondMatrix.get_columns_dimension()):
+                print("Invalid Matrices Dimensions")
+                return
+            resultList = []
+            for row in range(self.get_rows_dimension()):
+                rowList = []
+                for column in range(self.get_columns_dimension()):
+                    rowList.append(self.matrix[row][column] - SecondMatrix[row][column])
+                resultList.append(rowList)
+            ResultMatrix = Matrix(resultList, len(resultList), len(resultList[0]))
+            
+            return ResultMatrix
+        
+        except:
+            print("Undefined Subtraction")
+
+    # Overloading the * Opearator to work for matrices
+    def __mul__(self, SecondMatrix):
+        try:
+            if not(self.get_columns_dimension() == SecondMatrix.get_rows_dimension()):
+                print("Invalid Matrices Dimensions")
+                return
+            
+            resultList = [[0 for j in range(SecondMatrix.get_columns_dimension())] for i in range(self.get_rows_dimension())]
+            for row in range(self.get_rows_dimension()):
+                for column in range(SecondMatrix.get_columns_dimension()):
+                    resultList[row][column] = 0
+                    for k in range(SecondMatrix.get_rows_dimension()):
+                        resultList[row][column] += self.matrix[row][k]*SecondMatrix.matrix[k][column]
+            
+            ResultMatrix = Matrix(resultList, self.get_rows_dimension(), SecondMatrix.get_columns_dimension())
+            return ResultMatrix
+
+        except:
+            print("Undefined Multiplication")        
 
     def __getitem__(self, index):
         try:
