@@ -105,7 +105,17 @@ class Matrix:
             return ResultMatrix
 
         except:
-            print("Undefined Multiplication")        
+            if type(SecondMatrix) == int or float:
+                self.__rmul__(SecondMatrix)
+                return
+            print("Undefined Multiplication")
+
+    def __rmul__(self, num):
+        if not(type(num) == int or float):
+            print("Invalid Multiplication")
+            return
+        self.multiplyScalar(num)
+        return 1
 
     def __getitem__(self, index):
         try:
