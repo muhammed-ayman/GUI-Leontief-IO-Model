@@ -4,27 +4,27 @@ from tkinter import *
 HEIGHT = 600
 WIDTH = 600
 
-
+# Tkinter Info
 root = Tk()
 root.title("Leontif Input-Output Analysis")
-root.geometry(str(WIDTH)+"x"+str(HEIGHT))
+root.geometry("{0}x{1}".format(WIDTH, HEIGHT))
 
 class App:
     def __init__(self, master):
         self.master = master
-        AppFrame = Frame(master)
-        AppFrame.pack()
+        self.AppFrame = Frame(self.master, width=WIDTH, height=HEIGHT)
+        self.AppFrame.pack()
         self.main_window()
     
     def main_window(self):
-        self.matrix_dim_label1 = Label(self.master, 
+        self.matrix_dim_label1 = Label(self.AppFrame, 
                                     text="Enter The IO Matrix Dimension",
                                     font=('Arial', 14))
-        self.matrix_dim_label2 = Label(self.master, 
+        self.matrix_dim_label2 = Label(self.AppFrame, 
                                     text="N =",
                                     font=('Arial', 14))
-        self.matrix_dim_entry = Entry(self.master)
-        self.matrix_dim_btn = Button(self.master,
+        self.matrix_dim_entry = Entry(self.AppFrame)
+        self.matrix_dim_btn = Button(self.AppFrame,
                                     text="Proceed",
                                     command=self.proceedToAnalysisWindow)
 
@@ -42,5 +42,11 @@ class App:
         try:
             matrix_dim = int(self.matrix_dim_entry.get())
             print("Valid Matrix Dimension")
+            self.clearFrame()
         except:
             print("Invalid Dimension")
+    
+    def clearFrame(self):
+        for widget in self.AppFrame.winfo_children():
+            widget.destroy()
+        self.AppFrame.pack_forget()
