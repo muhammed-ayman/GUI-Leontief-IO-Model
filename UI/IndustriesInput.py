@@ -1,11 +1,12 @@
-from AbstractFrame import AbstractFrame
+from UI.AbstractFrame import AbstractFrame
 from tkinter import *
 
 class IndustriesInput(AbstractFrame):
-    def __init__(self, master, graphicsInfo, matrixDimension=0):
+    def __init__(self, master, graphicsInfo, appInstance, matrixDimension=0):
         self.master = master
         self.graphicsInfo = graphicsInfo
         self.matrixDimension = matrixDimension
+        self.appInstance = appInstance
     
     def draw(self):
         FrameTitle = Label(self.frame, 
@@ -15,35 +16,47 @@ class IndustriesInput(AbstractFrame):
                         y = 20)
 
         self.industries = []
-        industries_labels = []
-        industries_entries = []
+        self.industries_labels = []
+        self.industries_entries = []
         
         for i in range(self.matrixDimension):
             industryLabel = Label(self.frame, 
-                                text="Industry {0}".format(str(i+1)),
+                                text="Industry/Good {0}".format(str(i+1)),
                                 font=('Arial', 12))
-            industries_labels.append(industryLabel)
-        
-        for i in range(self.matrixDimension):
+            self.industries_labels.append(industryLabel)
+
             industryEntry = Entry(self.frame)
-            industries_entries.append(industryEntry)
-        
+            self.industries_entries.append(industryEntry)
+
+            self.industries_labels[i].place(x=150, 
+                                    y = 20+50*(i+1))
+            self.industries_entries[i].place(x=280, 
+                                    y = 20+50*(i+1),
+                                    width=170,
+                                    height=30)
+
         industries_submission_btn = Button(self.frame,
                                     text="Proceed",
-                                    command=self.proceedToAnalysisWindow)
-        
-        for i in range(self.matrixDimension):
-            industries_labels[i].place(x=150, 
-                                    y = 20+50*(i+1))
-            industries_entries[i].place(x=250, 
-                                    y = 20+50*(i+1),
-                                    width=200,
-                                    height=30)
+                                    command=self.proceedToDemandVectorInputWindow)
 
         industries_submission_btn.place(x=150,
                                 y = 20+50*(self.matrixDimension+1),
                                 height=40,
                                 width=300)
     
-    def proceedToAnalysisWindow(self):
-        print(self.frame.winfo_children())
+    def proceedToDemandVectorInputWindow(self):
+        try:
+            self.industries = []
+            for i in range(self.matrixDimension):
+                self.industries.append(self.industries_entries[i].get())
+
+            self.clearFrame()
+            self.appInstance.saveIndustries(self.industries)
+            self.appInstance.fireIOMatrixInputWindow()
+        
+        except Exception as e:
+            self.industries = []
+            print(e)
+    
+    def __del__(self):
+        print("IndustriesInput Window Destructor Called!")

@@ -1,9 +1,9 @@
-from AbstractFrame import AbstractFrame
+from UI.AbstractFrame import AbstractFrame
 from tkinter import *
-from IndustriesInput import IndustriesInput
 
 class MainWindow(AbstractFrame):
-    def __init__(self, master, graphicsInfo):
+    def __init__(self, master, graphicsInfo, appInstance):
+        self.appInstance = appInstance
         self.master = master
         self.graphicsInfo = graphicsInfo
         self.matrixDimension = 0
@@ -18,7 +18,7 @@ class MainWindow(AbstractFrame):
         self.matrix_dim_entry = Entry(self.frame)
         self.matrix_dim_btn = Button(self.frame,
                                     text="Proceed",
-                                    command=self.proceedToAnalysisWindow)
+                                    command=self.proceedToIndustriesInputWindow)
 
         self.matrix_dim_entry.place(x=(self.graphicsInfo["HEIGHT"]/2)-50, 
                                     y = (self.graphicsInfo["WIDTH"]/2)-50,
@@ -39,13 +39,15 @@ class MainWindow(AbstractFrame):
     def get_matrix_dimension(self):
         return self.matrixDimension
     
-    def proceedToAnalysisWindow(self):
+    def proceedToIndustriesInputWindow(self):
         try:
             dim = int(self.matrix_dim_entry.get())
             self.matrixDimension = dim
             self.clearFrame()
-            self.IndustriesInputObj = IndustriesInput(self.master, self.graphicsInfo, self.matrixDimension)
-            self.IndustriesInputObj.initFrame()
-            self.IndustriesInputObj.draw()
+            self.appInstance.saveMatrixDimension(self.matrixDimension)
+            self.appInstance.fireIndustriesInputWindow()
         except Exception as e:
             print(e)
+    
+    def __del__(self):
+        print("Main Window Destructor Called!")

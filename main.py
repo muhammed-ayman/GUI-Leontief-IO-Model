@@ -1,6 +1,19 @@
 from Matrix.Matrix import *
+from tkinter import *
+from UI.UI import *
 
-if __name__ == '__main__':
-    InputOutputMatrix = Matrix([[1,2,3],[4,5,6],[7,8,9], [10,11,12]], 4 , 3)
-    DemandVector = Matrix.Matrix()
-    ProductionLevelVector = Matrix.Matrix()
+# Graphics Info
+graphicsInfo = {
+    'HEIGHT' : 600,
+    'WIDTH' : 600
+}
+
+# Tkinter Initialization
+root = Tk()
+root.title("Leontif Input-Output Analysis")
+root.geometry("{0}x{1}".format(graphicsInfo['WIDTH'], graphicsInfo['HEIGHT']))
+
+if __name__ == '__main__':  
+    app = App(root, graphicsInfo)
+    app.execute()
+    root.mainloop()
