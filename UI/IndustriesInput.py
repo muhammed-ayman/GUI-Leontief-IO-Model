@@ -25,6 +25,7 @@ class IndustriesInput(AbstractFrame):
             self.industries_labels.append(industryLabel)
 
             industryEntry = Entry(self.frame)
+            industryEntry.insert(0, 'Industry {0}'.format(str(i+1)))
             self.industries_entries.append(industryEntry)
 
             self.industries_labels[i].place(x=150, 
@@ -36,14 +37,14 @@ class IndustriesInput(AbstractFrame):
 
         industries_submission_btn = Button(self.frame,
                                     text="Proceed",
-                                    command=self.proceedToDemandVectorInputWindow)
+                                    command=self.proceedToIOMatrixWindow)
 
         industries_submission_btn.place(x=150,
                                 y = 20+50*(self.matrixDimension+1),
                                 height=40,
                                 width=300)
     
-    def proceedToDemandVectorInputWindow(self):
+    def proceedToIOMatrixWindow(self):
         try:
             self.industries = []
             for i in range(self.matrixDimension):

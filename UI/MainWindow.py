@@ -16,6 +16,7 @@ class MainWindow(AbstractFrame):
                                     text="N =",
                                     font=('Arial', 14))
         self.matrix_dim_entry = Entry(self.frame)
+        self.matrix_dim_entry.insert(0, 3)
         self.matrix_dim_btn = Button(self.frame,
                                     text="Proceed",
                                     command=self.proceedToIndustriesInputWindow)
