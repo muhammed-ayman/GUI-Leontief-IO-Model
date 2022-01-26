@@ -2,9 +2,8 @@ from UI.AbstractFrame import AbstractFrame
 from tkinter import *
 
 class IndustriesInput(AbstractFrame):
-    def __init__(self, master, graphicsInfo, appInstance, matrixDimension=0):
+    def __init__(self, master, appInstance, matrixDimension=0):
         self.master = master
-        self.graphicsInfo = graphicsInfo
         self.matrixDimension = matrixDimension
         self.appInstance = appInstance
     

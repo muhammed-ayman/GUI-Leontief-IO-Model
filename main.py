@@ -1,19 +1,14 @@
 from Matrix.Matrix import *
 from tkinter import *
 from UI.UI import *
-
-# Graphics Info
-graphicsInfo = {
-    'HEIGHT' : 600,
-    'WIDTH' : 600
-}
+import config
 
 # Tkinter Initialization
 root = Tk()
 root.title("Leontif Input-Output Analysis")
-root.geometry("{0}x{1}".format(graphicsInfo['WIDTH'], graphicsInfo['HEIGHT']))
+root.geometry("{0}x{1}".format(config.graphicsInfo['WIDTH'], config.graphicsInfo['HEIGHT']))
 
 if __name__ == '__main__':  
-    app = App(root, graphicsInfo)
+    app = App(root)
     app.execute()
     root.mainloop()

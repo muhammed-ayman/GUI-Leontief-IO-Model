@@ -1,16 +1,16 @@
 from UI.MainWindow import MainWindow
 from UI.IndustriesInput import IndustriesInput
+import config
 
 class App:
-    def __init__(self, master, graphicsInfo):
+    def __init__(self, master):
         self.industries = []
         self.InputOutputMatrix = 0
         self.DemandVector = 0
         self.ProductionLevelVector = 0
         self.MatrixDimension = 0
-        self.MainWindowObj = MainWindow(master, graphicsInfo, self)
+        self.MainWindowObj = MainWindow(master, self)
         self.master = master
-        self.graphicsInfo = graphicsInfo
     
     def execute(self):
         self.MainWindowObj.initFrame()
@@ -28,7 +28,7 @@ class App:
     def fireIndustriesInputWindow(self):
         del self.MainWindowObj
         self.MainWindowObj = None
-        self.IndustriesInputObj = IndustriesInput(self.master, self.graphicsInfo, self, matrixDimension=self.MatrixDimension)
+        self.IndustriesInputObj = IndustriesInput(self.master, self, matrixDimension=self.MatrixDimension)
         self.IndustriesInputObj.initFrame()
         self.IndustriesInputObj.draw()
     

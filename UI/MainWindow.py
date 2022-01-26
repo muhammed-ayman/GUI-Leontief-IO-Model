@@ -1,11 +1,11 @@
 from UI.AbstractFrame import AbstractFrame
 from tkinter import *
+import config
 
 class MainWindow(AbstractFrame):
-    def __init__(self, master, graphicsInfo, appInstance):
+    def __init__(self, master, appInstance):
         self.appInstance = appInstance
         self.master = master
-        self.graphicsInfo = graphicsInfo
         self.matrixDimension = 0
     
     def draw(self):
@@ -20,19 +20,19 @@ class MainWindow(AbstractFrame):
                                     text="Proceed",
                                     command=self.proceedToIndustriesInputWindow)
 
-        self.matrix_dim_entry.place(x=(self.graphicsInfo["HEIGHT"]/2)-50, 
-                                    y = (self.graphicsInfo["WIDTH"]/2)-50,
+        self.matrix_dim_entry.place(x=(config.graphicsInfo["HEIGHT"]/2)-50, 
+                                    y = (config.graphicsInfo["WIDTH"]/2)-50,
                                     width=100,
                                     height=30)
 
         self.matrix_dim_label1.place(x=150,
                                     y=200)
 
-        self.matrix_dim_label2.place(x=(self.graphicsInfo["HEIGHT"]/2)-100,
-                                    y = (self.graphicsInfo["WIDTH"]/2)-50)
+        self.matrix_dim_label2.place(x=(config.graphicsInfo["HEIGHT"]/2)-100,
+                                    y = (config.graphicsInfo["WIDTH"]/2)-50)
 
-        self.matrix_dim_btn.place(x=(self.graphicsInfo["HEIGHT"]/2)-50,
-                                y = (self.graphicsInfo["WIDTH"]/2),
+        self.matrix_dim_btn.place(x=(config.graphicsInfo["HEIGHT"]/2)-50,
+                                y = (config.graphicsInfo["WIDTH"]/2),
                                 height=30,
                                 width=100)
     
