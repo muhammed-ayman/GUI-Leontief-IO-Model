@@ -1,4 +1,3 @@
-from turtle import width
 from UI.AbstractFrame import AbstractFrame
 from tkinter import *
 import config
@@ -55,7 +54,7 @@ class IOMatrix(AbstractFrame):
                                     text="Proceed",
                                     command=self.checkIOInputs)
         submissionButton.place(relx=0.5,
-                                    y=upMargin+self.matrixDimension*cellHeight,
+                                    y=upMargin+10+self.matrixDimension*cellHeight,
                                     width=0.4*config.graphicsInfo['WIDTH'],
                                     height=50,
                                     anchor=CENTER)

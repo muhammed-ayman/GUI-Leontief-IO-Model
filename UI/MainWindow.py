@@ -9,6 +9,7 @@ class MainWindow(AbstractFrame):
         self.matrixDimension = 0
     
     def draw(self):
+        upMargin = 0.3*config.graphicsInfo['HEIGHT']
         self.matrix_dim_label1 = Label(self.frame, 
                                     text="Enter The IO Matrix Dimension",
                                     font=('Arial', 14))
@@ -21,21 +22,25 @@ class MainWindow(AbstractFrame):
                                     text="Proceed",
                                     command=self.proceedToIndustriesInputWindow)
 
-        self.matrix_dim_entry.place(x=(config.graphicsInfo["HEIGHT"]/2)-50, 
-                                    y = (config.graphicsInfo["WIDTH"]/2)-50,
+        self.matrix_dim_entry.place(relx=0.5, 
+                                    y =config.graphicsInfo["WIDTH"]/2,
                                     width=100,
-                                    height=30)
+                                    height=30,
+                                    anchor=CENTER)
 
-        self.matrix_dim_label1.place(x=150,
-                                    y=200)
+        self.matrix_dim_label1.place(relx=0.5,
+                                    y=upMargin/4,
+                                    anchor=CENTER)
 
-        self.matrix_dim_label2.place(x=(config.graphicsInfo["HEIGHT"]/2)-100,
-                                    y = (config.graphicsInfo["WIDTH"]/2)-50)
+        self.matrix_dim_label2.place(relx=0.35,
+                                    y = config.graphicsInfo["WIDTH"]/2,
+                                    anchor=CENTER)
 
-        self.matrix_dim_btn.place(x=(config.graphicsInfo["HEIGHT"]/2)-50,
-                                y = (config.graphicsInfo["WIDTH"]/2),
+        self.matrix_dim_btn.place(relx=0.5,
+                                y = (config.graphicsInfo["WIDTH"]/2)+50,
                                 height=30,
-                                width=100)
+                                width=100,
+                                anchor=CENTER)
     
     def get_matrix_dimension(self):
         return self.matrixDimension

@@ -1,53 +1,86 @@
+
+# Exceptions
+class Error(Exception):
+    """Base Class For All Exceptions"""
+    pass
+
+class MatrixInCompatibilityError(Error):
+    """Raised When The Matrix Dimensions Are Incompatible With The Given List"""
+    def __init__(self, message="The Matrix Dimensions Are Incompatible With The Given List"):
+        self.message = message
+        super().__init__(self.message)
+
+class InvalidMatrixIndex(Error):
+    """Raised When The Requested Matrix Index Is Invalid"""
+    def __init__(self, message="Invalid Matrix Index"):
+        self.message = message
+        super().__init__(self.message)
+
+class InvalidMatrixError(Error):
+    """Raised When The Matrix Is Invalid"""
+    def __init__(self, message="Invalid Matrix"):
+        self.message = message
+        super().__init__(self.message)
+
+# The Matrix Class
 class Matrix:
     # n = number of rows, m = number of columns
     def __init__(self,matrix=[],n=0,m=0):
-        self.matrix = matrix
-        if not self.validate_matrix(matrix, n, m):
-            print("Invalid Matrix!")
+        self._matrix = matrix
+        self._rows_dim = n
+        self._cols_dim = m
+        try:
+            self.validate_matrix()
+        except:
             self.__del__()
     
+    def is_square(self):
+        return (self._rows_dim == self._cols_dim)
+
     def get_row(self, index):
         try:
-            return self.matrix[index]
+            return self._matrix[index]
         except:
-            return "Invalid Index!"
+            raise InvalidMatrixIndex
     
     def get_column(self, index):
         try:
             column = []
-            for row in range(0, len(self.matrix)):
+            for row in range(0, len(self._matrix)):
                 column.append(row[index])
             return column
         except:
-            return "Invalid Index!"
+            raise InvalidMatrixIndex
 
     def get_matrix(self):
-        return self.matrix
+        return self._matrix
 
-    def validate_matrix(self, matrix, n, m):
-        rows_num = len(self.matrix)
-        if not (n > 0 and m > 0):
-            return
-        if rows_num != n:
-            return 0
-        for row in range(rows_num):
-            if len(self.matrix[row]) != m:
-                return 0
-        return 1
+    def validate_matrix(self):
+        # Checks Whether The Matrix is Valid
+        if not isinstance(self._matrix, list):
+            raise InvalidMatrixError
+        if not isinstance(self._matrix[0], list):
+            raise InvalidMatrixError
+        # Checks Whether The Matrix Dimensions are Compatible
+        if not (self._rows_dim > 0 and self._cols_dim > 0) or (self._rows_dim != len(self._matrix)):
+            raise MatrixInCompatibilityError        
+        for row in range(len(self._matrix)):
+            if len(self._matrix[row]) != self._cols_dim:
+                raise MatrixInCompatibilityError
     
     def get_rows_dimension(self):
-        return len(self.matrix)
+        return self._rows_dim
     
     def get_columns_dimension(self):
-        return len(self.matrix[0])
+        return self._cols_dim
     
     def multiplyScalar(self, scalar):
         try:
-            for row in range(self.get_rows_dimension()):
-                for column in range(self.get_columns_dimension()):
-                    self.matrix[row][column] *= scalar
+            for row in range(self._rows_dim):
+                for column in range(self._cols_dim):
+                    self._matrix[row][column] *= scalar
         except:
-            print("Invalid Scalar!")
+            raise TypeError("Invalid Scalar.")
     
     # Overloading the + operator to work for matrices
     def __add__(self, SecondMatrix):
@@ -59,7 +92,7 @@ class Matrix:
             for row in range(self.get_rows_dimension()):
                 rowList = []
                 for column in range(self.get_columns_dimension()):
-                    rowList.append(self.matrix[row][column] + SecondMatrix[row][column])
+                    rowList.append(self._matrix[row][column] + SecondMatrix[row][column])
                 resultList.append(rowList)
             resultMatrix = Matrix(resultList, len(resultList), len(resultList[0]))
             
@@ -78,7 +111,7 @@ class Matrix:
             for row in range(self.get_rows_dimension()):
                 rowList = []
                 for column in range(self.get_columns_dimension()):
-                    rowList.append(self.matrix[row][column] - SecondMatrix[row][column])
+                    rowList.append(self._matrix[row][column] - SecondMatrix[row][column])
                 resultList.append(rowList)
             ResultMatrix = Matrix(resultList, len(resultList), len(resultList[0]))
             
@@ -99,7 +132,7 @@ class Matrix:
                 for column in range(SecondMatrix.get_columns_dimension()):
                     resultList[row][column] = 0
                     for k in range(SecondMatrix.get_rows_dimension()):
-                        resultList[row][column] += self.matrix[row][k]*SecondMatrix.matrix[k][column]
+                        resultList[row][column] += self._matrix[row][k]*SecondMatrix.matrix[k][column]
             
             ResultMatrix = Matrix(resultList, self.get_rows_dimension(), SecondMatrix.get_columns_dimension())
             return ResultMatrix
@@ -119,7 +152,7 @@ class Matrix:
 
     def __getitem__(self, index):
         try:
-            return self.matrix[index]
+            return self._matrix[index]
         except:
             print("Invalid Element Position!")
 
