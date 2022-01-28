@@ -131,20 +131,8 @@ class Matrix:
     # Overloading the * Opearator to work for matrices
     def __mul__(self, SecondMatrix):
         try:
-            if not(self.get_columns_dimension() == SecondMatrix.get_rows_dimension()):
-                print("Invalid Matrices Dimensions")
-                return
-            
-            resultList = [[0 for j in range(SecondMatrix.get_columns_dimension())] for i in range(self.get_rows_dimension())]
-            for row in range(self.get_rows_dimension()):
-                for column in range(SecondMatrix.get_columns_dimension()):
-                    resultList[row][column] = 0
-                    for k in range(SecondMatrix.get_rows_dimension()):
-                        resultList[row][column] += self._matrix[row][k]*SecondMatrix.matrix[k][column]
-            
-            ResultMatrix = Matrix(resultList, self.get_rows_dimension(), SecondMatrix.get_columns_dimension())
-            return ResultMatrix
-
+            result = np.matmul(self.get_matrix(), SecondMatrix.get_matrix()).tolist()
+            return Matrix(result, self.get_rows_dimension(), SecondMatrix.get_columns_dimension())
         except:
             if type(SecondMatrix) == int or float:
                 self.__rmul__(SecondMatrix)
@@ -189,5 +177,5 @@ def getInverse(matrix: Matrix) -> Matrix:
     givenMatrix = np.array(matrix.get_matrix())
     invertedNumpyMatrix = np.linalg.inv(givenMatrix)
     invertedMatrix = invertedNumpyMatrix.tolist()
-    invertedMatrix = Matrix(invertedMatrix, matrix.get_columns_dimension())
+    invertedMatrix = Matrix(invertedMatrix, len(invertedMatrix), len(invertedMatrix))
     return invertedMatrix

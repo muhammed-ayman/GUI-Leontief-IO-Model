@@ -20,10 +20,11 @@ class Vector(Matrix):
         self.__cols = cols
         try:
             self.validateVector()
+            self.convertIntoColumns()
         except Exception as e:
             self.__del__()
             raise e
-        super(Vector, self).__init__([vectorList],rows,cols)
+        super(Vector, self).__init__(self.__vector,cols,rows)
     
     def validateVector(self):
         # Checks Whether The Matrix is Valid
@@ -36,7 +37,15 @@ class Vector(Matrix):
         if self.__rows != 1 or len(self.__vector) != self.__cols:
             raise IncompatibleVector
     
+    def convertIntoColumns(self):
+        column_vector = [[e] for e in self.__vector]
+        self.__vector = column_vector
+    
+    def __getitem__(self, index):
+        try:
+            return self.__vector[index][0]
+        except:
+            print("Invalid Element Position!")
+    
     def __del__(self):
         print("The Vector Has Been Deleted!")
-
-v = Vector([1,2,3],1,3)

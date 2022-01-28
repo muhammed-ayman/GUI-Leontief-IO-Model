@@ -1,4 +1,6 @@
+from wsgiref import validate
 from Matrix import *
+from Vector import Vector
 
 # Exceptions
 class Error(Exception):
@@ -27,9 +29,10 @@ class NonHSMatrix(Error):
 class IOMatrix(Matrix):
     def __init__(self, matrix=[], n=0,m=0):
         super(IOMatrix, self).__init__(matrix,n,m)
-        self.validateIOMatrix()
         self.LeontifMatrix = None
         self.invertedLeontifMatrix = None
+        self.validateIOMatrix()
+        self.validateHSConditions()
     
     def validateIOMatrix(self):
         # Checks Whether the IO Matrix is Square
@@ -45,7 +48,6 @@ class IOMatrix(Matrix):
     def validateHSConditions(self):
         identityMatrix = generateIdentityMatrix(self._rows_dim)
         self.LeontifMatrix = identityMatrix - self
-        print(self.LeontifMatrix.get_matrix())
         for i in range(self._rows_dim):
             if self.LeontifMatrix[i][i] <= 0:
                 raise NonHSMatrix
@@ -60,3 +62,15 @@ class IOMatrix(Matrix):
         pMatrix = Matrix(pMinorMatrix, self._rows_dim-1, self._rows_dim-1)
         pDet = getDeterminant(pMatrix)
         return pDet
+    
+    # Solve The System
+    def getPLevelVector(self, demandVector: Vector) -> Vector:
+        if self.validateDemandVector(demandVector):
+            return self.invertedLeontifMatrix * demandVector
+
+    # Checks Demand Vector Validity
+    def validateDemandVector(self, demandVector: Vector) -> bool:
+        for i in range(demandVector.get_rows_dimension()):
+            if demandVector[i] < 0:
+                return 0
+        return 1
