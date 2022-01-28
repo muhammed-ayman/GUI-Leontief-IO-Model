@@ -1,8 +1,15 @@
+import numpy as np
 
 # Exceptions
 class Error(Exception):
     """Base Class For All Exceptions"""
     pass
+
+class NonSquareMatrix(Error):
+    """Raised When A Method Requires A Square Matrix But The Given One is Not"""
+    def __init__(self, message="Square Matrix Required."):
+        self.message = message
+        super().__init__(self.message)
 
 class MatrixInCompatibilityError(Error):
     """Raised When The Matrix Dimensions Are Incompatible With The Given List"""
@@ -158,3 +165,28 @@ class Matrix:
 
     def __del__(self):
         print("The Matrix Has Been Deleted!")
+
+
+# General Functions
+def getDeterminant(matrix: Matrix) -> float:
+    # Checks Whether The Matrix is Square
+    if not matrix.is_square():
+        raise NonSquareMatrix
+
+    return np.linalg.det(matrix.get_matrix())
+
+def generateIdentityMatrix(IdentityDimension) -> Matrix:
+    identity_entries=[[1 if row==col else 0 for col in range(IdentityDimension)] for row in range(IdentityDimension)]
+    IdentityMatrix = Matrix(identity_entries, IdentityDimension, IdentityDimension)
+    return IdentityMatrix
+
+def getInverse(matrix: Matrix) -> Matrix:
+    # Checks Whether The Matrix is Square
+    if not matrix.is_square():
+        raise NonSquareMatrix
+    
+    givenMatrix = np.array(matrix.get_matrix())
+    invertedNumpyMatrix = np.linalg.inv(givenMatrix)
+    invertedMatrix = invertedNumpyMatrix.tolist()
+    invertedMatrix = Matrix(invertedMatrix, matrix.get_columns_dimension())
+    return invertedMatrix
