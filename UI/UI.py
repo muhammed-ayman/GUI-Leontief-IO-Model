@@ -1,7 +1,9 @@
 from UI.MainWindow import MainWindow
 from UI.IndustriesInput import IndustriesInput
 from UI.IOMatrixWindow import IOMatrixWindow
+from UI.DemandVectorWindow import DemandVectorWindow
 from Matrix.IOMatrix import IOMatrix
+from Matrix.Vector import Vector
 import config
 
 class App:
@@ -12,6 +14,7 @@ class App:
         self.ProductionLevelVector = 0
         self.MatrixDimension = 0
         self.IOMatrixObj = 0
+        self.pLevelVectorObj = 0
         self.MainWindowObj = MainWindow(master, self)
         self.master = master
     
@@ -31,8 +34,15 @@ class App:
     
     def saveIOMatrix(self, IOMatrixObj: IOMatrix):
         self.IOMatrixObj = IOMatrixObj
-        print(self.IOMatrixObj.get_matrix())
-        pass
+
+    def savePLevelVector(self, pLevelVector: Vector):
+        self.pLevelVectorObj = pLevelVector
+
+    def getIOMatrixInstance(self):
+        return self.IOMatrixObj
+    
+    def getPLevelVector(self):
+        return self.pLevelVectorObj
     
     def fireMainWindow(self):
         self.MainWindowObj.initFrame()
@@ -53,9 +63,11 @@ class App:
         self.IOMatrixWindowObj.draw()
     
     def fireDemandVectorInputWindow(self):
-        del self.IOMatrixObj
-        self.IOMatrixObj = None
-        pass
+        del self.IOMatrixWindowObj
+        self.IOMatrixWindowObj = None
+        self.DemandVectorWindowObj = DemandVectorWindow(self.master, self, matrixDimension=self.MatrixDimension)
+        self.DemandVectorWindowObj.initFrame()
+        self.DemandVectorWindowObj.draw()
 
     def fireSolutionWindow(self):
         if self.IOMatrixObj:
