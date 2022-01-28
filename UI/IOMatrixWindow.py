@@ -40,6 +40,8 @@ class IOMatrixWindow(AbstractFrame):
             for j in range(self.matrixDimension):
                 io_cell = Entry(self.frame)
                 io_cell.insert(0,0)
+                if i == j:
+                    io_cell.insert(0,0.1)
                 io_cell.place(x=leftMargin+j*(cellWidth),
                             y=upMargin+i*cellHeight, width=cellWidth/2, height=cellHeight/2)
                 self.IOEntries.append(io_cell)

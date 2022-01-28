@@ -4,6 +4,8 @@ from UI.IOMatrixWindow import IOMatrixWindow
 from UI.DemandVectorWindow import DemandVectorWindow
 from Matrix.IOMatrix import IOMatrix
 from Matrix.Vector import Vector
+from Matrix.Matrix import Matrix
+from UI.SolutionWindow import SolutionWindow
 import config
 
 class App:
@@ -15,6 +17,7 @@ class App:
         self.MatrixDimension = 0
         self.IOMatrixObj = 0
         self.pLevelVectorObj = 0
+        self.pLevelVectorBasis = 0
         self.MainWindowObj = MainWindow(master, self)
         self.master = master
     
@@ -37,12 +40,18 @@ class App:
 
     def savePLevelVector(self, pLevelVector: Vector):
         self.pLevelVectorObj = pLevelVector
+    
+    def savePVectorNullSpace(self, pLevelVectorBasis: Matrix):
+        self.pLevelVectorBasis = pLevelVectorBasis
 
     def getIOMatrixInstance(self):
         return self.IOMatrixObj
     
     def getPLevelVector(self):
         return self.pLevelVectorObj
+    
+    def getPVectorSpace(self):
+        return self.pLevelVectorBasis
     
     def fireMainWindow(self):
         self.MainWindowObj.initFrame()
@@ -72,7 +81,10 @@ class App:
     def fireSolutionWindow(self):
         if self.IOMatrixObj:
             del self.IOMatrixObj
-        pass
+            self.IOMatrixObj = None
+        self.SolutionWindowObj = SolutionWindow(self.master, self)
+        self.SolutionWindowObj.initFrame()
+        self.SolutionWindowObj.draw()
 
     def __del__(self):
         print("App Destructor Called!")

@@ -14,6 +14,7 @@ class DemandVectorWindow(AbstractFrame):
         self.DemandVectorInputs = []
         self.invalidInputLabel = None
         self.pLevelVector = None
+        self.nullSpaceBasis = None
         self.IOMatrixInstance = appInstance.getIOMatrixInstance()
     
     def draw(self):
@@ -65,7 +66,6 @@ class DemandVectorWindow(AbstractFrame):
             try:
                 floatConversion = float(self.DemandVectorEntries[i].get())
             except:
-                # print(self.DemandVectorEntries[i].get())
                 self.invalidInputLabel = Label(self.frame,
                                 text="Invalid Vector",
                                 font=('Arial', 10), anchor=W)
@@ -78,6 +78,10 @@ class DemandVectorWindow(AbstractFrame):
         try:
             dVector = Vector(self.DemandVectorInputs, 1, self.matrixDimension)
             self.pLevelVector = self.IOMatrixInstance.getPLevelVector(dVector)
+            if self.pLevelVector:
+                self.proceedToSolutionWindow()
+                return
+            self.nullSpaceBasis = self.IOMatrixInstance.null_space_basis.get_matrix()    
             self.proceedToSolutionWindow()
         
         except Exception as e:
@@ -92,7 +96,10 @@ class DemandVectorWindow(AbstractFrame):
         
     def proceedToSolutionWindow(self):
         self.clearFrame()
-        self.appInstance.savePLevelVector(self.pLevelVector)
+        if self.pLevelVector:
+            self.appInstance.savePLevelVector(self.pLevelVector)
+        if self.nullSpaceBasis:
+            self.appInstance.savePVectorNullSpace(self.nullSpaceBasis)
         self.appInstance.fireSolutionWindow()
     
     def __del__(self):
