@@ -1,4 +1,3 @@
-from wsgiref import validate
 from Matrix import *
 from Vector import Vector
 
