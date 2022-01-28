@@ -38,8 +38,9 @@ class Matrix:
         self._cols_dim = m
         try:
             self.validate_matrix()
-        except:
+        except Exception as e:
             self.__del__()
+            raise e
     
     def is_square(self):
         return (self._rows_dim == self._cols_dim)
