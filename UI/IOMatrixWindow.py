@@ -12,6 +12,8 @@ class IOMatrixWindow(AbstractFrame):
         self.IOEntries = []
         self.IOInputs = []
         self.invalidInputLabel = None
+        self.demandVectorState = IntVar()
+        self.IOMatrixInstance = None
     
     def draw(self):
         # Setting the layout configuration
@@ -59,6 +61,14 @@ class IOMatrixWindow(AbstractFrame):
                                     width=0.4*config.graphicsInfo['WIDTH'],
                                     height=50,
                                     anchor=CENTER)
+        
+        # Demand Vector Checkbutton
+        self.demandCheckBox = Checkbutton(self.frame,
+                                text="Demand Vector",
+                                variable=self.demandVectorState)
+        self.demandCheckBox.place(relx=0.5,
+                                    y=upMargin+80+self.matrixDimension*cellHeight,
+                                    anchor=CENTER)
     
     def checkIOInputs(self):
         self.IOInputs = []
@@ -67,7 +77,9 @@ class IOMatrixWindow(AbstractFrame):
         localInputList = []
         counter = 1
         for i in range(self.matrixDimension*self.matrixDimension):
-            if not self.IOEntries[i].get().isnumeric():
+            try:
+                floatConversion = float(self.IOEntries[i].get())
+            except:
                 self.invalidInputLabel = Label(self.frame,
                                 text="Invalid IO Matrix",
                                 font=('Arial', 10), anchor=W)
@@ -82,14 +94,31 @@ class IOMatrixWindow(AbstractFrame):
                 localInputList = []
                 counter += 1
         try:
-            iomat = IOMatrix(self.IOInputs, self.matrixDimension, self.matrixDimension)
+            self.IOMatrixInstance = IOMatrix(self.IOInputs, self.matrixDimension, self.matrixDimension)
+            if self.demandVectorState:
+                self.proceedToDemandVectorInputWindow()
+                return
+            self.proceedToSolutionWindow()
+        
         except Exception as e:
-            print(e)
-            
+            if self.invalidInputLabel:
+                self.invalidInputLabel.destroy()
+            self.invalidInputLabel = Label(self.frame,
+                                text=e,
+                                font=('Arial', 10), anchor=W)
+            self.invalidInputLabel.place(relx=0.5,
+                                    y=0.9*config.graphicsInfo['HEIGHT'],
+                                    anchor=CENTER)
+        
     def proceedToDemandVectorInputWindow(self):
         self.clearFrame()
-        self.appInstance.saveIndustries(self.industries)
-        self.appInstance.fireIOMatrixInputWindow()
+        self.appInstance.saveIOMatrix(self.IOMatrixInstance)
+        self.appInstance.fireDemandVectorInputWindow()
+    
+    def proceedToSolutionWindow(self):
+        self.clearFrame()
+        self.appInstance.saveIOMatrix(self.IOMatrixInstance)
+        self.appInstance.fireSolutionWindow()
     
     def __del__(self):
         print("IOMatrix Window Destructor Called!")

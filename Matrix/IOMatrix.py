@@ -31,7 +31,7 @@ class IOMatrix(Matrix):
         self.LeontifMatrix = None
         self.invertedLeontifMatrix = None
         self.validateIOMatrix()
-        self.validateHSConditions()
+        # self.validateHSConditions()
     
     def validateIOMatrix(self):
         # Checks Whether the IO Matrix is Square
@@ -74,7 +74,14 @@ class IOMatrix(Matrix):
     # Solve The System
     def getPLevelVector(self, demandVector: Vector) -> Vector:
         if self.validateDemandVector(demandVector):
-            return self.invertedLeontifMatrix * demandVector
+            isDemandZero = (not any(demandVector))
+            # Apply The HS Conditions in case Demand is Not The Zero Vector.
+            if not isDemandZero:
+                self.validateHSConditions()
+                return self.invertedLeontifMatrix * demandVector
+            # Solve The Homogenous System (I-A)x=0 otherwise.
+            demandMatrix = np.array(demandVector.get_matrix())
+            print(demandMatrix)
 
     # Checks Demand Vector Validity
     def validateDemandVector(self, demandVector: Vector) -> bool:

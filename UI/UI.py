@@ -1,6 +1,7 @@
 from UI.MainWindow import MainWindow
 from UI.IndustriesInput import IndustriesInput
 from UI.IOMatrixWindow import IOMatrixWindow
+from Matrix.IOMatrix import IOMatrix
 import config
 
 class App:
@@ -10,6 +11,7 @@ class App:
         self.DemandVector = 0
         self.ProductionLevelVector = 0
         self.MatrixDimension = 0
+        self.IOMatrixObj = 0
         self.MainWindowObj = MainWindow(master, self)
         self.master = master
     
@@ -27,6 +29,11 @@ class App:
     def saveMatrixDimension(self, matrix_dimension):
         self.MatrixDimension = matrix_dimension
     
+    def saveIOMatrix(self, IOMatrixObj: IOMatrix):
+        self.IOMatrixObj = IOMatrixObj
+        print(self.IOMatrixObj.get_matrix())
+        pass
+    
     def fireMainWindow(self):
         self.MainWindowObj.initFrame()
         self.MainWindowObj.draw()
@@ -41,9 +48,19 @@ class App:
     def fireIOMatrixInputWindow(self):
         del self.IndustriesInputObj
         self.IndustriesInputObj = None
-        self.IOMatrixObj = IOMatrixWindow(self.master, self, matrixDimension=self.MatrixDimension)
-        self.IOMatrixObj.initFrame()
-        self.IOMatrixObj.draw()
+        self.IOMatrixWindowObj = IOMatrixWindow(self.master, self, matrixDimension=self.MatrixDimension)
+        self.IOMatrixWindowObj.initFrame()
+        self.IOMatrixWindowObj.draw()
+    
+    def fireDemandVectorInputWindow(self):
+        del self.IOMatrixObj
+        self.IOMatrixObj = None
+        pass
+
+    def fireSolutionWindow(self):
+        if self.IOMatrixObj:
+            del self.IOMatrixObj
+        pass
 
     def __del__(self):
         print("App Destructor Called!")
