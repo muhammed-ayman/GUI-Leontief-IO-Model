@@ -1,4 +1,4 @@
-from Matrix import *
+from Matrix.Matrix import *
 
 # Exceptions
 class InvalidVectorError(Error):

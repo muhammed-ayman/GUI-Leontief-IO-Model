@@ -1,6 +1,6 @@
 from UI.MainWindow import MainWindow
 from UI.IndustriesInput import IndustriesInput
-from UI.IOMatrixWindow import IOMatrix
+from UI.IOMatrixWindow import IOMatrixWindow
 import config
 
 class App:
@@ -41,7 +41,7 @@ class App:
     def fireIOMatrixInputWindow(self):
         del self.IndustriesInputObj
         self.IndustriesInputObj = None
-        self.IOMatrixObj = IOMatrix(self.master, self, matrixDimension=self.MatrixDimension)
+        self.IOMatrixObj = IOMatrixWindow(self.master, self, matrixDimension=self.MatrixDimension)
         self.IOMatrixObj.initFrame()
         self.IOMatrixObj.draw()
 

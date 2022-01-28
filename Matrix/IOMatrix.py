@@ -1,5 +1,5 @@
-from Matrix import *
-from Vector import Vector
+from Matrix.Matrix import *
+from Matrix.Vector import Vector
 
 # Exceptions
 class Error(Exception):
@@ -37,11 +37,20 @@ class IOMatrix(Matrix):
         # Checks Whether the IO Matrix is Square
         if not self.is_square():
             raise NotSquareIOMatrix
-        # Checks whether the IO Matrix is Realistic
+        # Checks Whether the IO Matrix is Realistic
         for row in range(self._rows_dim):
             for col in range(self._cols_dim):
                 if self._matrix[row][col] >= 1 or self._matrix[row][col] < 0:
                     raise NonRealisticIOMatrix
+        # Checks Whether the IO Matrix contains a Column of Zeros
+        for col in range(self._cols_dim):
+            valid_col = 0
+            for row in range(self._rows_dim):
+                if self._matrix[row][col] != 0:
+                    valid_col = 1
+                    break
+            if not valid_col:
+                raise NonRealisticIOMatrix("IO Matrix Can't Contain a Column of Zeros.")
     
     # Checks Whether The Matrix Satisfies The HS Conditions
     def validateHSConditions(self):

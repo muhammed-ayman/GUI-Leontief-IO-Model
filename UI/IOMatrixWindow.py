@@ -1,8 +1,9 @@
 from UI.AbstractFrame import AbstractFrame
 from tkinter import *
+from Matrix.IOMatrix import *
 import config
 
-class IOMatrix(AbstractFrame):
+class IOMatrixWindow(AbstractFrame):
     def __init__(self, master, appInstance, matrixDimension=0):
         self.master = master
         self.matrixDimension = matrixDimension
@@ -80,7 +81,11 @@ class IOMatrix(AbstractFrame):
                 self.IOInputs.append(localInputList)
                 localInputList = []
                 counter += 1
-
+        try:
+            iomat = IOMatrix(self.IOInputs, self.matrixDimension, self.matrixDimension)
+        except Exception as e:
+            print(e)
+            
     def proceedToDemandVectorInputWindow(self):
         self.clearFrame()
         self.appInstance.saveIndustries(self.industries)
