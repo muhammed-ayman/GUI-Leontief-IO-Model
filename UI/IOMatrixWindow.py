@@ -97,9 +97,14 @@ class IOMatrixWindow(AbstractFrame):
                 counter += 1
         try:
             self.IOMatrixInstance = IOMatrix(self.IOInputs, self.matrixDimension, self.matrixDimension)
-            if self.demandVectorState:
+            if self.demandVectorState.get():
                 self.proceedToDemandVectorInputWindow()
                 return
+            dVectorInputs = [0 for i in range(self.matrixDimension)]
+            dVector = Vector(dVectorInputs, 1, self.matrixDimension)
+            self.IOMatrixInstance.getPLevelVector(dVector)
+            nullSpaceBasis = self.IOMatrixInstance.null_space_basis.get_matrix()
+            self.appInstance.savePVectorNullSpace(nullSpaceBasis)
             self.proceedToSolutionWindow()
         
         except Exception as e:
@@ -119,7 +124,7 @@ class IOMatrixWindow(AbstractFrame):
     
     def proceedToSolutionWindow(self):
         self.clearFrame()
-        self.appInstance.saveIOMatrix(self.IOMatrixInstance)
+        # self.appInstance.saveIOMatrix(self.IOMatrixInstance)
         self.appInstance.fireSolutionWindow()
     
     def __del__(self):
