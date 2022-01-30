@@ -39,7 +39,6 @@ class IOMatrix(Matrix):
         self.LeontifMatrix = None
         self.invertedLeontifMatrix = None
         self.validateIOMatrix()
-        # self.validateHSConditions()
     
     def validateIOMatrix(self):
         # Checks Whether the IO Matrix is Square
