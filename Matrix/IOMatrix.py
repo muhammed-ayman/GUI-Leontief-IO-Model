@@ -1,5 +1,13 @@
 from Matrix.Matrix import *
 from Matrix.Vector import Vector
+import scipy
+from scipy import linalg, matrix
+
+def null(A, eps=1e-15):
+    u, s, vh = scipy.linalg.svd(A)
+    null_mask = (s <= eps)
+    null_space = scipy.compress(null_mask, vh, axis=0)
+    return scipy.transpose(null_space)
 
 # Exceptions
 class Error(Exception):
@@ -79,7 +87,14 @@ class IOMatrix(Matrix):
             if isNotDemandZero:
                 self.validateHSConditions()
                 return self.invertedLeontifMatrix * demandVector
-
+           # Solve The Homogenous System (I-A)x=0 otherwise.
+            null_space = null(matrix(self.get_matrix()))
+            row, col = null_space.shape
+            if col == 0:
+                null_space = np.zeros((row,1))
+                col += 1
+            self.null_space_basis = Matrix(null_space.tolist(), row, col)
+            
     # Checks Demand Vector Validity
     def validateDemandVector(self, demandVector: Vector) -> bool:
         for i in range(demandVector.get_rows_dimension()):
